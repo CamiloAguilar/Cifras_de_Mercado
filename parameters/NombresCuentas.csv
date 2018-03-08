@@ -1,0 +1,267 @@
+"nom.cuentas";"Freq"
+" (UC9 + UC10 - UC11 - UC12)";2008
+" CONST RESERVA DESVIAC SINIESTRALID";86
+" CONST RESERVA MATEMAT RIESG PROFES";86
+" CONST RESERVA SINIESTROS AVISAD";86
+" CONST RESERVA SINIESTROS NO AVIS";86
+" CONST RESERVAS ESPECIALES";86
+" GTOS SALVAM PARTE REASEG EXTERIOR";86
+" GTOS SALVAM PARTE REASEG INTERIOR";86
+" INGRESOS Y/O GASTOS NETOS REASEGUROS, SEGUROS, ADM/TIVOS Y DE PERSONAL (UC9 + UC10 - UC11 - UC12)";82
+" LIBERACION RES DESVIAC DE SINIESTRAL";86
+" LIBERACION RES MAT RIESGOS PROFESIO";86
+" LIBERACION RES PARA SINIESTROS AVISA";86
+" LIBERACION RES PARA SINIESTROS NO AVIS";86
+" LIBERACION RESERVAS ESPECIALES";86
+" RECOBROS";86
+" SALVAMENTOS DE ACEP REAS EXTERIOR";86
+" SALVAMENTOS DE ACEP REAS INTERIOR";86
+" SALVAMENTOS LIQUIDADOS Y REALIZADOS";86
+" Subtotal";2008
+" SUBTOTAL";172
+" Subtotal - GASTOS DE EXPEDICIÓN";82
+"Aceptadas Reaseguro exterior";2090
+"ACEPTADAS REASEGURO EXTERIOR";86
+"Aceptadas Reaseguro interior";2090
+"ACEPTADAS REASEGURO INTERIOR";86
+"Aceptados en reaseguro";2090
+"ACEPTADOS EN REASEGURO";86
+"AJUSTES O COMP PERIODICOS ANTER (RESTA)";86
+"Ajustes o compensaciones períodos anteriores (resta)";574
+"CANC Y-O ANULAC PRIMAS EMIT DIR Y COA";86
+"CANC Y-O ANULAC PRIMAS REASEG ACEP";86
+"CANC Y-O ANULAC PRIMAS REASEG CEDI";86
+"Cancelaciones y/o anulaciones primas de reaseguro aceptado (resta)";2090
+"Cancelaciones y/o anulaciones primas de reaseguro cedido ";2090
+"Cancelaciones y/o anulaciones primas emitidas directas y coaseguro (resta)";2090
+"CEDIDAS REASEGURO EXTERIOR";86
+"Cedidas Reaseguro exterior (resta)";2090
+"CEDIDAS REASEGURO INTERIOR";86
+"Cedidas Reaseguro interior (resta)";2090
+"Comisiones AFP";2090
+"COMISIONES AFP";86
+"Comisiones de Reaseguro Cedido";2090
+"Comisiones por uso de red de oficinas";2008
+"COMISIONES REASEGURO CEDIDO";86
+"CONST RES MAT RIESGOS PROFESIONALES";86
+"CONST RES SEG VIDA AHORRO CON PARTI";86
+"CONST RESERVA DE RIESGO CATASTROFICO";86
+"CONST RESERVA MATEMATICA";86
+"CONSTI RESER TEC DE PRIMA NO DEVENGADA";86
+"CONSTI RESER TEC POR INSUFICIE DE PRIMA";86
+"CONSTITU RESER DE INSUFICIEN DE ACTIVOS";86
+"Constitución Reserva de Insuficiencia de Activos (resta)";82
+"Constitución Reserva de Riesgos Catastróficos (resta)";82
+"Constitución Reserva desviación siniestralidad (resta)";2090
+"CONSTITUCION RESERVA MAT BEEPS (RESTA)";86
+"CONSTITUCION RESERVA MATEMA BEEPS";86
+"Constitución Reserva matemática (resta)";2090
+"Constitucion Reserva Matematica BEP´s";1148
+"Constitución Reserva matemática Riesgos Profesionales";2090
+"Constitución Reserva matemática Riesgos Profesionales (resta)";2090
+"Constitución Reserva Seguro de Vida Ahorro con Participa.(resta)";2090
+"Constitución Reserva Siniestros Avisados  (resta)";2090
+"Constitución Reserva Siniestros No Avisados  (resta)";2090
+"Constitución Reserva Técnica de prima no devengada (resta)";82
+"Constitución Reserva Técnica de riesgo en curso (resta)";2008
+"Constitución Reserva Técnica por insuficiencia de prima (resta)";82
+"Constitución Reservas especiales (resta)";2090
+"CONTRIBUCIONES DE SEGUROS";86
+"Contribuciones de Seguros (resta)";2090
+"COSTO EXCESO DE PERDIDA";86
+"Costo Exceso de Pérdida (resta)";2090
+"Costos Riesgos Profesionales (resta)";2090
+"CTOS RIESGOS PROFESIONALES";86
+"Directos";2090
+"DIRECTOS";86
+"EGRE INVER DE LAS RESERNAS TECNICAS";86
+"Egresos inversiones de las reservas técnicas (resta)";82
+"ELIMINADA";860
+"Gastos administrativos";2008
+"GASTOS DE ADM INDIREC ASIGN A CADA  RAMO";86
+"Gastos de Administración de Coaseguro Aceptado (resta)";2090
+"GASTOS DE ADMINISTRACION DIRECTOS RAMO";86
+"Gastos de administración directos ramo";82
+"Gastos de administración indirectos asignables a cada ramo";82
+"GASTOS DE PERSO INDI ASIGNAB A CADA RAMO";86
+"Gastos de personal";2008
+"Gastos de personal directos ramo";82
+"Gastos de personal indirectos asignables a cada ramo";82
+"GASTOS DEPERSONAL DIRECTOS RAMO";86
+"GASTOS EN TARIFACION";86
+"Gastos en tarifación";82
+"Gastos Salvamentos parte reasegurada exterior (resta)";2090
+"Gastos Salvamentos parte reasegurada interior (resta)";2090
+"GTOS DE ADMON COASEG ACEPTADO";86
+"IMPTO DE RENTA Y COMPLEMENTARIOS";86
+"Impuesto de renta y complementarios";2008
+"IMPUESTOS DE RENTA Y COMPLEMENTARIOS";82
+"ING CAUS ACT A CORT AMORT RESP RE TEC";86
+"ING REALI DE ACT V RAZ RESP LAS RES TECN";86
+"ING Y EGRE PORT DE INV DIF A RESER TECNI";86
+"Ingresos causados de activos a costo amortizado respaldando reservas técnicas";82
+"INGRESOS EXCESO DE PERDIDA";86
+"Ingresos Exceso de Pérdida";2090
+"Ingresos realizados de activos a valor razonable respaldando reservas técnicas";82
+"Ingresos y Egresos Portafolio de Inversiones";2008
+"Ingresos y egresos Portafolio de Inversiones diferente a reservas técnicas";82
+"Ingresos y/o Egresos reportes programas especiales";2090
+"INT Y GTOS RECONOCIDOS X REASEGUR";86
+"INTER RECON A REASEGURADORES";86
+"Intereses Reconocidos a Reaseguradores (resta)";2090
+"Intereses y Gastos Reconocidos por Reaseguradores";2090
+"LIBERAC RESER TEC DE INSUFICI DE ACTIVOS";86
+"LIBERAC RESER TEC DE PRIMA NO DEVENGADA";86
+"LIBERAC RESER TEC POR INSUFICIE DE PRIMA";86
+"LIBERACION RES MAT RIESGOS PROFESI";86
+"LIBERACION RES MATEMATICA BEEPS";86
+"LIBERACION RES SEG VIDA AHORRO CON";86
+"LIBERACION RESERVA BEEPS(RESTA)";86
+"Liberación Reserva de Insuficiencia de Activos";82
+"LIBERACION RESERVA DE RIESGO CATASTROFIC";86
+"Liberación Reserva de Riesgos Catastróficos";82
+"LIBERACION RESERVA MATEMATICA";86
+"Liberación Reserva Matemática";2090
+"Liberacion Reserva Matematica BEP´s";574
+"Liberacion Reserva Matematica BEP´s (resta)";574
+"Liberación Reserva Matemática Riesgos Profesionales";2090
+"Liberación Reserva Matemática Riesgos Profesionales (resta)";2090
+"Liberación Reserva para Siniestros Avisados";2090
+"Liberación Reserva para Siniestros No Avisados";2090
+"Liberación Reserva Seguro de Vida Ahorro con Participa.";2090
+"Liberación Reserva Técnica de prima no devengada";82
+"Liberación Reserva Técnica de riesgo en curso";2008
+"Liberación Reserva Técnica por insuficiencia de prima";82
+"Liberación Reservas desviación de siniestralidad";2090
+"Liberación Reservas especiales";2090
+"OTRAS PROVISIONES";86
+"Otras Provisiones (resta)";2090
+"OTROS EGRESOS";86
+"Otros Egresos (resta)";2090
+"OTROS GASTOS DE ADMIN Y PERS NO ASIG";86
+"Otros gastos de administración y personal no asignables a ramos";82
+"Otros ingresos y Egresos";2090
+"OTROS INGRESOS Y EGRESOS";86
+"Otros productos de seguros";2090
+"OTROS PRODUCTOS DE SEGUROS";86
+"PAPELERIA Y GASTOS DE ENTREGA";86
+"Papelería y gastos de entrega";82
+"PARTE REASEGURO AL EXTERIOR";86
+"Parte reaseguro al exterior (resta)";2090
+"PARTE REASEGURO AL INTERIOR";86
+"Parte reaseguro al interior (resta)";2090
+"PARTICIP UTILIDADES REASEG CEDIDO";86
+"PARTICIPAC UTILIDADES Y OTROS";86
+"Participación de Utilidades y Otros (resta)";2090
+"Participación Utilidades Reaseguro Cedido";2090
+"POLIZAS CANCELADAS Y-O VENCIDAS";86
+"Pólizas canceladas y/o vencidas (resta)";2090
+"POLIZAS EMITIDAS NUEVAS";86
+"Pólizas emitidas nuevas";2090
+"POLIZAS REHABILITADAS";86
+"Pólizas rehabilitadas";2090
+"POLIZAS VIGENTES AL FINAL A#O ANTERIOR";86
+"Pólizas vigentes al final del año anterior";2090
+"PRIM CED INT Y EXT(COB) TERR INC OTR RAM";86
+"PRIM EMIT(COB)DEL TERREM INC OTROS RAMOS";86
+"Primas acept y/o cedidas x CamComp SOAT";86
+"Primas aceptadas en coaseguro";2090
+"PRIMAS ACEPTADAS EN COASEGURO";86
+"Primas aceptadas y/o cedidas por Cámara de Compensación SOAT";2090
+"PRIMAS CEDIDAS CONT AUTOM REASEG";86
+"PRIMAS CEDIDAS CONT FACUL REASEG";86
+"PRIMAS CEDIDAS CONTRATOS AUTOMAT REA";86
+"Primas cedidas contratos automáticos exterior";2090
+"Primas cedidas contratos automáticos interior";2090
+"PRIMAS CEDIDAS CONTRATOS FACUL REAS";86
+"Primas cedidas contratos facultativos exterior";2090
+"Primas cedidas contratos facultativos interior";2090
+"PRIMAS CEDIDAS INTER Y EXTER TERREMOTO";86
+"Primas cedidas interior y exterior (coberturas) de terremoto incluidas en otros ramos";2090
+"Primas cedidas interior y exterior terremoto";2090
+"PRIMAS DEVENGADAS";86
+"Primas Devengadas (UC1 más UC2)";2008
+"PRIMAS DEVENGADAS (UC1 más UC2)";82
+"PRIMAS EMI POLIZA SEGUROS SUJETAS APORTE";86
+"Primas emitidas (coberturas) de incendio incluidas en otros ramos";2008
+"Primas emitidas (coberturas) de terremoto incluidas en otros ramos";2090
+"Primas emitidas demás coberturas incluidas en el ramo de incendio (resta)";2008
+"Primas Emitidas Directas";2090
+"PRIMAS EMITIDAS DIRECTAS";86
+"Primas Emitidas pólizas de seguros sujetas a aporte";574
+"Primas emitidas ramo de incendio";2008
+"Primas emitidas ramo de terremoto";2090
+"PRIMAS EMITIDAS RAMO DE TERREMOTO";86
+"PROV CTAS POR COBRAR ACTIVIDAD ASEG";86
+"Provisión cuentas por cobrar actividad aseguradora (resta)";2090
+"Recobros";2090
+"REEMB POR ENFERMEDAD PROFESIONAL";86
+"REEMB SINIESTROS CONTR NO PROPORC";172
+"REEMB SINIESTROS SOB CESIONES REAS";172
+"REEMB STROS GARANTIZ X LA NACION RGOS";86
+"Reembolso de siniestros contratos no proporcionales reaseguro exterior";2090
+"Reembolso de siniestros sobre cesiones reaseguro exterior";2090
+"Reembolso de siniestros sobre cesiones reaseguro interior";2090
+"Reembolso siniestros contratos no proporcionales reaseguro interior";2090
+"Reembolso stros. garantiz. por la Nación rgos. polít y extraor.";2090
+"Reembolsos por enfermedad profesional";2090
+"REMU POR USO DE RED Y A CANA DE COMERC";86
+"REMUNERACION A FAVOR DE INTERMEDIA";86
+"Remuneración a favor de intermediarios";2008
+"Remuneración a favor de intermediarios dependientes e independientes";82
+"Remuneración de administración de coaseguro";2090
+"REMUNERACION DE ADMON DE COASEG";86
+"Remuneraciones por uso de red y a canales de comercialización";82
+"RESULTADO TECNICO";86
+"RESULTADO TECNICO (UC3 + UC8 + UC13)";82
+"Resultado técnico (UC3 + UC8 + UC13)";2008
+"RESULTADOS DEL EJERCICIO";86
+"Resultados del ejercicio (UC16  -  UC17)";2008
+"RESULTADOS DEL EJERCICIO (UC16  -  UC17)";82
+"RETENCION NETA DE LA COMPA#IA";86
+"Retención neta de la compañía";2008
+"RETENCIÓN NETA DE LA COMPAÑÍA (Valores Asegurados) en millones de pesos";82
+"Salvamentos de aceptaciones reaseguro exterior";2090
+"Salvamentos de aceptaciones reaseguro interior";2090
+"Salvamentos liquidados y realizados";2090
+"SINIESTROS CTA COMPA#IA";86
+"Siniestros cuenta compañía (UC4 - UC5 + UC6 + UC7)";2008
+"SINIESTROS CUENTA COMPAÑÍA (UC4 - UC5 + UC6 + UC7)";82
+"SINIESTROS DE ACEP CONT NO PROPORC";86
+"SINIESTROS DE ACEP CONTRAT NO PROP";86
+"SINIESTROS DE ACEP REASEG EXTERIOR";86
+"SINIESTROS DE ACEP REASEG INTERIOR";86
+"Siniestros de aceptaciones contratos no proporcionales reaseguros exterior";2090
+"Siniestros de aceptaciones contratos no proporcionales reaseguros interior";2090
+"Siniestros de aceptaciones reaseguro exterior";2090
+"Siniestros de aceptaciones reaseguro interior";2090
+"Siniestros liquidados";2090
+"SINIESTROS LIQUIDADOS";86
+"Subtotal";22088
+"SUBTOTAL";860
+"Subtotal - GASTOS DE ADMINISTRACIÓN Y PERSONAL";82
+"Subtotal - INFORMACION DE REASEGUROS";82
+"Subtotal - LIBERACIÓN Y CONSTITUCION DE RESERVAS SINIESTROS";82
+"Subtotal - OTROS INGRESOS Y/O EGRESOS";82
+"Subtotal - OTROS INGRESOS Y/O GASTOS NETOS DE REASEGURO";82
+"Subtotal - OTROS INGRESOS Y/O GASTOS NETOS DE SEGUROS";82
+"Subtotal - PRIMAS RETENIDAS";82
+"Subtotal - REEMBOLSO DE SINIESTROS";82
+"Subtotal - RESERVAS TECNICAS Y MATEMÁTICAS";82
+"Subtotal - SALVAMENTOS Y RECOBROS";82
+"Subtotal - SINIESTROS LIQUIDADOS";82
+"SUBTOTAL BASE CAL APRTE PRONAS SEGUROS";86
+"Subtotal base de cálculo del aporte sobre las pólizas de seguros";492
+"Subtotal base de cálculo del aporte sobre las pólizas de seguros FONDO NACIONAL DE BOMBEROS     ";82
+"Total pólizas vigentes final del ejercicio";2008
+"TOTAL PÓLIZAS VIGENTES FINAL DEL EJERCICIO";82
+"TOTAL POLIZAS VIGENTES FINAL EJERCIC";86
+"Total primas emitidas riesgo de incendio";2008
+"TOTAL PRIMAS RETENIDAS RIESGO DE TERREM";86
+"Total primas retenidas riesgo de terremoto";2008
+"TOTAL PRIMAS RETENIDAS RIESGO DE TERREMOTO";82
+"UTILIDAD ANTES DE IMPUESTOS";86
+"Utilidad antes de impuestos (UC14 + UC15)";2008
+"UTILIDAD ANTES DE IMPUESTOS (UC14 + UC15)";82
+"Ys Y-O EGRESOS REPORTES PROG ESPEC";86
+"Ys Y-O GTOS NETOS REASEG, ADMIN Y PERSON";86
