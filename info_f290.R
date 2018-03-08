@@ -9,7 +9,7 @@ load.lib("readxl", "lubridate", "dplyr", "reshape2")
 # 1. Cargue Info en R ####
 #*************************************
 source("Super_Scraping.R")
-read.290(years=2016)
+read.290(years=2016:2017)
 
 #**************************************
 # 2. Agrupa Aseguradoras ####
@@ -65,7 +65,7 @@ for(k in 1:length(gr)){
 }
 names(grupo.290)<-gr
 
-summary(grupo.290$JMALUCELLITRAVELERS)
+summary(grupo.290)
 
 #**************************************
 # 3. Agrupa periodos x Aseguradora ####
