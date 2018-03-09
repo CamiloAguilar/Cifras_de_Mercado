@@ -81,9 +81,15 @@ find.290 <- function(df.links, folder){
   missing.data <- df.links %>%
                   filter(!(df.links$Mes %in% files))
   already <- df.links$Mes[df.links$Mes %in% files]
-  message("\n\n Following files have already been downloaded previously: ")
-  for(i in 1:length(already)){
-    print(as.character(already[i]))
+  
+  
+  if(length(missing.data$Mes)>0){
+    message("\n\n New information is available for the following periods: ")
+    for(i in 1:length(missing.data$Mes)){
+      print(as.character(missing.data$Mes[i]))
+    }
+  } else {
+    message("\n\n The information is updated to the last period available on the web")
   }
   cat ("\n Press intro to continue... \n")
   x<-readline()
@@ -144,12 +150,75 @@ read.290 <- function(years){
     
     FCorte <- as.Date.character(FCorte, format = "%d/%m/%Y")-1
     y$FCorte <- FCorte
-    assign(nom, y, envir=globalenv())
+    assign(nom, y) #, envir=globalenv()
     
   }
+  
+  formatos.290 <- list()
+  l <- ls()[grep("^f290", ls())]
+  for(i in 1:length(l)){
+    formatos.290[[i]] <- get(l[i])
+  }
+  names(formatos.290) <- l
+  #summary(formatos.290)
+  save(formatos.290, file="./results/formatos.290.RData")
+  
+  return(formatos.290)
 }
 
+## Define nuevas Características definidas a partir de la combinación de cuentas contables disponibles
+## en el formato 290
+new_feature.290 <- function(serie.290, counts = Ctas_Asociadas, nameFeature = NombreIndicador,
+                            percentage = FALSE){
+  for(m in 1:length(serie.290)){
+    p <- serie.290[[m]]
+    message(" Calculando ", nameFeature, " para el Grupo ", names(serie.290)[m])
+    
+    CtasIndicador <- p %>%
+                     mutate(CuentaCorta = as.numeric(str_sub(Cuenta, 7, 12))) %>%
+                     filter(CuentaCorta %in% counts) %>%
+                     select(-(CuentaCorta))
+    CtasIndicador$Ramo <- as.character(CtasIndicador$Ramo)   
+    CtasIndicador$Nombre_cuenta <- as.character(CtasIndicador$Nombre_cuenta)
+    
+    Ramos <- as.character(unique(CtasIndicador$Ramo))
+    Indicador <- CtasIndicador[1,]
+    Indicador <- Indicador[-(1),]
+    NuevosInd<-NULL
+    
+    for(i in 1:length(Ramos) ){
+      # Agrupamos cuentas
+      IndXramo <- CtasIndicador %>%
+                  filter(Ramo==Ramos[i]) %>%
+                  mutate(CuentaCorta = as.numeric(str_sub(Cuenta, 7, 12)))
+      # Calcula y Guarda resultados
+      NuevosInd[2] <- nameFeature
+      NuevosInd[3] <- as.character(Ramos[i])
+      
+      if(percentage == FALSE){
+        NuevosInd[4:length(names(CtasIndicador))] <- colSums(IndXramo[,4:length(names(CtasIndicador))], na.rm=T)
+      } else{
+        n <- which(counts[1]==IndXramo$CuentaCorta) # determina numerador
+        d <- which(counts[2]==IndXramo$CuentaCorta) # determina denominador
+        NuevosInd[4:length(names(CtasIndicador))] <- apply(IndXramo[,4:length(names(CtasIndicador))], 
+                                                           MARGIN = 2, 
+                                                           FUN = indice.290, numerador=n, denominador=d)
+      }
+      Indicador[i,] <- NuevosInd
+      NuevosInd<-NULL
+    }
+    ## Añadimos resultado a tabla original
+    p <- rbind(p, Indicador)
+    serie.290[[m]] <- p
+  }
+  
+  message("\n ... ready the chicken!!!")
+  return(serie.290)
+}
 
-
-
+indice.290 <- function(r, numerador, denominador){
+  res <- round(abs(r[2]/r[1])*100,2)
+  res <- ifelse(is.nan(res) | is.infinite(res), 0, res)
+  return(res)
+}
 
