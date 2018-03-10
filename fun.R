@@ -168,7 +168,7 @@ read.290 <- function(years){
 
 ## Define nuevas Características definidas a partir de la combinación de cuentas contables disponibles
 ## en el formato 290
-new_feature.290 <- function(serie.290, counts = Ctas_Asociadas, nameFeature = NombreIndicador,
+new_feature.290 <- function(serie.290, counts = Ctas_Asociadas, nameFeature = NombreIndicador, keep=FALSE,
                             percentage = FALSE){
   for(m in 1:length(serie.290)){
     p <- serie.290[[m]]
@@ -192,11 +192,12 @@ new_feature.290 <- function(serie.290, counts = Ctas_Asociadas, nameFeature = No
                   filter(Ramo==Ramos[i]) %>%
                   mutate(CuentaCorta = as.numeric(str_sub(Cuenta, 7, 12)))
       # Calcula y Guarda resultados
+      NuevosInd[1] <- as.numeric(paste0("290999", str_pad(sum(counts), 5, pad="0")))
       NuevosInd[2] <- nameFeature
       NuevosInd[3] <- as.character(Ramos[i])
       
       if(percentage == FALSE){
-        NuevosInd[4:length(names(CtasIndicador))] <- colSums(IndXramo[,4:length(names(CtasIndicador))], na.rm=T)
+        NuevosInd[4:length(names(CtasIndicador))] <- colSums(IndXramo[,4:length(names(CtasIndicador))])
       } else{
         n <- which(counts[1]==IndXramo$CuentaCorta) # determina numerador
         d <- which(counts[2]==IndXramo$CuentaCorta) # determina denominador
@@ -207,10 +208,18 @@ new_feature.290 <- function(serie.290, counts = Ctas_Asociadas, nameFeature = No
       Indicador[i,] <- NuevosInd
       NuevosInd<-NULL
     }
+    ## Coerción resultados a numéricos
+    for(j in 4:length(names(Indicador))){
+      Indicador[, j] <- as.numeric(Indicador[, j])
+    }
+    
     ## Añadimos resultado a tabla original
     p <- rbind(p, Indicador)
     serie.290[[m]] <- p
   }
+  #if(keep==T){
+  #  save(serie.290, file = "./results/serie.290.RData")
+  #}
   
   message("\n ... ready the chicken!!!")
   return(serie.290)
@@ -222,3 +231,58 @@ indice.290 <- function(r, numerador, denominador){
   return(res)
 }
 
+
+ranking.290 <- function(serie.290, features, gr_ramo, years){
+  rank_year<-list()
+  message("\n")
+  for(k in 1:length(years)){
+    message("Generando ranking para el anho ", years[k])
+    sel <- list()
+    pos<-1
+    noms<-NULL
+    for(i in 1:length(serie.290)){
+      p <- serie.290[[i]]
+      
+      # Si la compañía no tiene información para el periodo, ésta se salta
+      valida <-which(names(p)==paste(years[k],"12","31", sep="-"))
+      if(length(valida)==0) next
+      
+      resumen <- p %>%
+                 mutate(Cuenta = as.numeric(str_sub(Cuenta, 7, 12)), Compania = names(serie.290)[i]) %>%
+                 select(Compania, Cuenta, Nombre_cuenta, Ramo, valida) %>%
+                 filter(Cuenta %in% features & Ramo %in% gr_ramo) %>%
+                 dcast(Compania + Ramo ~ Nombre_cuenta, value.var=names(p)[valida])
+      
+      # Guarda resultado
+      sel[[pos]]<-resumen
+      pos<-pos+1
+      noms <- c(noms, names(serie.290)[i])
+    }
+    
+    ## Genera tabla de resultado por año
+    df_response <- sel[[1]]
+    for(i in 2:length(sel)){
+      df_response <- rbind(df_response, sel[[i]])
+    }
+    
+    ## Filtra compañías sin prima emitida
+    df_response <- df_response %>%
+      filter(`PRIMAS DEVENGADAS`>0 & !Compania %in% c("TOTAL_GRALES", "TOTAL_VIDA"))
+    
+    names(sel) <- noms
+    summary(sel)
+    rank_year[[k]] <- df_response
+  }
+  names(rank_year)<-paste0("P",years)
+  
+  message("\n ... ready the chicken!!!")
+  return(rank_year)
+}
+
+
+copy.table<-function(obj, size = 4096) {
+  clip <- paste('clipboard-', size, sep = '')
+  f <- file(description = clip, open = 'w')
+  write.table(obj, f, row.names = FALSE, sep = '\t')
+  close(f) 
+}
