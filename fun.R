@@ -91,7 +91,7 @@ find.290 <- function(df.links, folder){
   } else {
     message("\n\n The information is updated to the last period available on the web")
   }
-  cat ("\n Press intro to continue... \n")
+  # cat ("\n Press intro to continue... \n")
   x<-readline()
   return(missing.data)
 }
@@ -285,4 +285,24 @@ copy.table<-function(obj, size = 4096) {
   f <- file(description = clip, open = 'w')
   write.table(obj, f, row.names = FALSE, sep = '\t')
   close(f) 
+}
+
+
+info.loaded <- function(){
+  if (!file.exists("./results/serie.290.RData")){
+    return(NULL)
+  } else{
+    #require(lubridate)
+    load("./results/serie.290.RData")
+    Aseguradoras <- names(serie.290)
+    desde <- NULL
+    hasta <- NULL
+    for(i in 1:length(Aseguradoras)){
+      p <-names(serie.290[[i]])[4:(length(names(serie.290[[i]])))]
+      desde <- c(desde, p[1])
+      hasta <- c(hasta, p[length(p)])
+    }
+    df <- data.frame(Aseguradoras, desde, hasta)
+    return(df)
+  }
 }
