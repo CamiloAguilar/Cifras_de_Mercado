@@ -231,12 +231,16 @@ indice.290 <- function(r, numerador, denominador){
   return(res)
 }
 
-
-ranking.290 <- function(serie.290, features, gr_ramo, years){
-  rank_year<-list()
+ranking.290 <- function(serie.290, features, gr_ramo, periods){
+  require(stringr)
+  rank_period<-list()
   message("\n")
-  for(k in 1:length(years)){
-    message("Generando ranking para el anho ", years[k])
+  for(k in 1:length(periods)){
+    message("Generando ranking para el periodo ", periods[k])
+    ye<-str_sub(periods[k], 1, 4)
+    mo<-str_pad(as.numeric(str_sub(periods[k], 5, 6))+1, 2, pad="0")
+    fecha<-as.Date.character(paste(ye, mo, 1, sep="/"), format = "%Y/%m/%d")-1
+    
     sel <- list()
     pos<-1
     noms<-NULL
@@ -244,7 +248,7 @@ ranking.290 <- function(serie.290, features, gr_ramo, years){
       p <- serie.290[[i]]
       
       # Si la compañía no tiene información para el periodo, ésta se salta
-      valida <-which(names(p)==paste(years[k],"12","31", sep="-"))
+      valida <-which(names(p)==as.character(fecha))
       if(length(valida)==0) next
       
       resumen <- p %>%
@@ -271,14 +275,13 @@ ranking.290 <- function(serie.290, features, gr_ramo, years){
     
     names(sel) <- noms
     summary(sel)
-    rank_year[[k]] <- df_response
+    rank_period[[k]] <- df_response
   }
-  names(rank_year)<-paste0("P",years)
+  names(rank_period)<-paste0("P", periods)
   
   message("\n ... ready the chicken!!!")
-  return(rank_year)
+  return(rank_period)
 }
-
 
 copy.table<-function(obj, size = 4096) {
   clip <- paste('clipboard-', size, sep = '')
@@ -286,7 +289,6 @@ copy.table<-function(obj, size = 4096) {
   write.table(obj, f, row.names = FALSE, sep = '\t')
   close(f) 
 }
-
 
 info.loaded <- function(){
   if (!file.exists("./results/serie.290.RData")){
@@ -306,3 +308,23 @@ info.loaded <- function(){
     return(df)
   }
 }
+
+periodos <- function(serie){
+  require(stringr)
+  require(lubridate)
+  #max(years)
+  maxInfo <- rownames(summary(serie))[which.max(summary(serie)[,1])]
+  p<-m_serie.290[[maxInfo]]
+  p2<-names(p)[4:length(p)]
+  per<-paste(year(p2), str_pad(month(p2), width = 2, pad="0"), sep="-")
+  return(per)
+}
+
+
+
+
+
+
+
+
+

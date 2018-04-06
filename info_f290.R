@@ -143,6 +143,8 @@ Ramos_Vida_sinSS <- c("ACCIDENTES PERSONALES","BEPS","COLECTIVO VIDA","ENFERMEDA
 Ramos_grupos <- list(Ramos_Vida, Ramos_Generales, Ramos_Objetivo, Ramos_Objetivo_Grales, Ramos_SS, Ramos_Vida_sinSS)
 names(Ramos_grupos) <- c("Ramos_Vida", "Ramos_Generales", "Ramos_Objetivo", "Ramos_Objetivo_Grales", 
                          "Ramos_SS", "Ramos_Vida_sinSS")
+saveRDS(Ramos_grupos, "./results/Ramos_grupos.rds")
+
 numRamos <- 191:(191+length(Ramos_grupos))
 
 #*************************************

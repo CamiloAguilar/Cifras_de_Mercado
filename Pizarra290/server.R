@@ -1,37 +1,45 @@
-options(scipen=999)
-library(shiny)
-library(dplyr)
-library(ggplot2)
-library(plotly)
-library(lubridate)
 
 
+
+
+#*********************
+## Shiny app ####
+#*********************
 shinyServer ( function ( input , output ) {
   
-  set.seed(122)
-  histdata <- rnorm(500)
+  # Render box - Primas emitidas
+  output$PrEmitida_Box <- renderInfoBox({
+    features <- c(03030, 03999, 05005, 14999, 18999, 12998)
+    gr_ramo <- input$grupo_ramos
+    meses_rank <- input$periodo
+    serie <- ifelse(input$horizonte=="mensual", m_serie.290, serie.290)
+    ranking <- ranking.290(serie.290 = serie, gr_ramo = gr_ramo, features = features, periods = meses_rank)
+    s <- sum(ranking[[1]][[7]])
+    
+    infoBox(
+      "Progress", paste0(s + input$count, "MM"), icon = icon("bar-chart"),
+      color = "green"
+    )
+  })
+  
+  
+  
+  output$tabset1Selected <- renderText({
+    input$tabset1
+  })
   
   output$moreControls <- renderUI({
-    if(input$tabset1=="Información precargada"){
-      sliderInput("slider1", input$tabset1 , 1, 10, 5)
+    if(input$tabset1=="Tab1"){
+      sliderInput("slider1", input$tabset1 , 1, 10000, 5)
     } else{
-      sliderInput("slider2", input$tabset1, 1, 1000, 1)
+      sliderInput("slider2", input$tabset1, 1, 10, 1)
     }
   })
   
   
-  output$Preload <- renderUI({
-    df<-as.data.frame(info.loaded())
-    if(is.null(df)){
-      "No hay información disponible aún."
-    } else{
-      DT::renderDataTable(df)
-    }
+  output$Preload = DT::renderDataTable({
+    info.loaded()
   })
-  
-  #output$Preload <- DT::renderDataTable({
-  #  df<-info.loaded()
-  #  })
   
   
   output$plot1 <- renderPlot({
