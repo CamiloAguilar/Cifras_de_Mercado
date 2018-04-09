@@ -231,28 +231,38 @@ indice.290 <- function(r, numerador, denominador){
   return(res)
 }
 
-ranking.290 <- function(serie.290, features, gr_ramo, periods){
+ranking.290 <- function(serie, features, gr_ramo, periods){
+  message("Grupo Ramos: ", gr_ramo)
+  message("Periodos:  ", periods)
   require(stringr)
+  require(reshape2)
   rank_period<-list()
   message("\n")
   for(k in 1:length(periods)){
     message("Generando ranking para el periodo ", periods[k])
-    ye<-str_sub(periods[k], 1, 4)
-    mo<-str_pad(as.numeric(str_sub(periods[k], 5, 6))+1, 2, pad="0")
+    ye<-ifelse(as.numeric(str_sub(periods[k], 6, 7))==12, as.numeric(str_sub(periods[k], 1, 4))+1,
+               str_sub(periods[k], 1, 4))
+    mo<-ifelse(as.numeric(str_sub(periods[k], 6, 7))==12, "01",
+                          str_pad(as.numeric(str_sub(periods[k], 6, 7))+1, 2, pad="0"))
     fecha<-as.Date.character(paste(ye, mo, 1, sep="/"), format = "%Y/%m/%d")-1
+    #message("Fecha informe: ", fecha, "sobre la serie: ")
+    #print(names(serie))
     
     sel <- list()
     pos<-1
     noms<-NULL
-    for(i in 1:length(serie.290)){
-      p <- serie.290[[i]]
+    for(i in 1:length(serie)){
+      #message("Resumen cia: ", i, "-", names(serie)[i])
+      p <- serie[[i]]
       
       # Si la compañía no tiene información para el periodo, ésta se salta
       valida <-which(names(p)==as.character(fecha))
-      if(length(valida)==0) next
-      
+      if(length(valida)==0) {
+        message("Cia ", i, "-", names(serie)[i], " no tiene info")
+        next
+      }
       resumen <- p %>%
-                 mutate(Cuenta = as.numeric(str_sub(Cuenta, 7, 12)), Compania = names(serie.290)[i]) %>%
+                 mutate(Cuenta = as.numeric(str_sub(Cuenta, 7, 12)), Compania = names(serie)[i]) %>%
                  select(Compania, Cuenta, Nombre_cuenta, Ramo, valida) %>%
                  filter(Cuenta %in% features & Ramo %in% gr_ramo) %>%
                  dcast(Compania + Ramo ~ Nombre_cuenta, value.var=names(p)[valida])
@@ -260,10 +270,11 @@ ranking.290 <- function(serie.290, features, gr_ramo, periods){
       # Guarda resultado
       sel[[pos]]<-resumen
       pos<-pos+1
-      noms <- c(noms, names(serie.290)[i])
+      noms <- c(noms, names(serie)[i])
     }
     
     ## Genera tabla de resultado por año
+    #message(length(sel))
     df_response <- sel[[1]]
     for(i in 2:length(sel)){
       df_response <- rbind(df_response, sel[[i]])
@@ -312,9 +323,10 @@ info.loaded <- function(){
 periodos <- function(serie){
   require(stringr)
   require(lubridate)
-  #max(years)
+  serie <- readRDS("./results/serie.290(features).rds")
+  
   maxInfo <- rownames(summary(serie))[which.max(summary(serie)[,1])]
-  p<-m_serie.290[[maxInfo]]
+  p<-serie[[maxInfo]]
   p2<-names(p)[4:length(p)]
   per<-paste(year(p2), str_pad(month(p2), width = 2, pad="0"), sep="-")
   return(per)
