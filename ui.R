@@ -34,7 +34,7 @@ header <- dashboardHeader(
 #*****************************************
 sidebar <- dashboardSidebar(
   sidebarMenu(
-    menuItem("Home", tabName = "Home", icon = icon("home")),
+    menuItem("Home", tabName = "Home", icon = icon("dashboard")),
     menuItem("Generador", tabName = "generador", icon = icon("wrench"), badgeLabel = "nuevo", 
              badgeColor = "green"),
     
@@ -53,57 +53,54 @@ body <- dashboardBody(
     #*****************************
     tabItem(tabName = "Home",
             fluidRow(
-              tabBox(
-                title = tagList(shiny::icon("gear"), "Parámetros para análisis"),
-                selected = "Nivel del análisis", width=9,
-                
-                tabPanel("Nivel del análisis", "Seleccione...",
-                         selectInput("grupo_ramos", "Nivel del análisis",
-                                     choices = names(Ramos_grupos), selected = "Ramos_Objetivo"
-                         )
-                ),
-                
-                tabPanel("Horizonte", "Seleccione el horizonte de tiempo...",
-                         selectInput("horizonte", "Horizonte", 
-                                      choices = list("mensual", "anual"), selected = "mensual"
-                         )
-                ),
-                
-                tabPanel("Periodo", "Seleccione el periodo a analizar...",
-                         selectInput("periodo", "Periodo", choices = periodos(), 
-                                     selected = periodos()[length(periodos())]
-                         )
+              box(title ="Panel de control",  width = 2,
+                  status = "primary",solidHeader = TRUE,
+                  selectInput("grupo_ramos", h3("Nivel del análisis"),
+                              choices = names(Ramos_grupos), selected = "Ramos_Objetivo"
+                  ),
+                  
+                  radioButtons("horizonte", h3("Horizonte de tiempo"), 
+                               choices = list("mensual", "anual"), selected = "mensual"
+                  ),
+                  selectInput("periodo", h3("Tipo de periodo"), choices = periodos(), 
+                              selected = periodos()[length(periodos())]
+                  ),
+                  selectInput("Ramos", h3("Seleccione varios:"), multiple = T, 
+                              choices = c("Ramo1","Ramo2","Ramo3","Ramo4"), selected = "opc1", 
+                              width = validateCssUnit("85%"))
+              ),
+              
+              
+              valueBoxOutput("PrEmitida_Box", width = 3),
+              valueBoxOutput("PrDevengada_Box", width = 3),
+              valueBoxOutput("ResTecnicio_Box", width = 3),
+              
+              box(title = "Participación del mercado",  width = 6,
+                  status = "success",solidHeader = TRUE,
+                tabBox(width = 12, height = "600px",
+                       selected = "Primas Emitidas",
+                       # The id lets us use input$tabset1 on the server to find the current tab
+                       id = "part_mercado", 
+                       
+                       tabPanel("Primas Emitidas", 
+                                plotlyOutput("pie_Emitidas")
+                       ),
+                       
+                       tabPanel("Primas Devengadas", 
+                                plotlyOutput("pie_Devengadas")
+                       ),
+                       
+                       tabPanel("Resultado Técnico",
+                                plotlyOutput("pie_ResTec")
+                       )
                 )
+              ),
+              box(title = "Ranking",  width = 4,
+                  status = "info",solidHeader = TRUE,
+                  DT::dataTableOutput("tbl_rank")
                 
-              ) ## Final de tabBox
-            ), ## Final fluidRow 1
-            
-            fluidRow(
-              valueBoxOutput("PrEmitida_Box"),
-              valueBoxOutput("PrDevengada_Box"),
-              valueBoxOutput("ResTecnicio_Box")
-            ), ## Final fluidRow 2
-            
-            tabBox(
-              title = "Participación del mercado",
-              selected = "Primas Emitidas",
-              
-              # The id lets us use input$tabset1 on the server to find the current tab
-              id = "part_mercado", 
-              height = "400px", width=12,
-              
-              tabPanel("Primas Emitidas", 
-                       plotlyOutput("pie_Emitidas")
-              ),
-              
-              tabPanel("Primas Devengadas", 
-                       plotlyOutput("pie_Devengadas")
-              ),
-              
-              tabPanel("Resultado Técnico",
-                       plotlyOutput("pie_ResTec")
               )
-            )
+            ) ## Final fluidRow 2
           ),
     
     ## C2. Second tab content ####

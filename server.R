@@ -6,24 +6,27 @@
 shinyServer ( function ( input , output ) {
   
   #**************************************
-  # Render box - Primas emitidas ####
+  ## Reactive - Ranking ####
   #**************************************
-  output$PrEmitida_Box <- renderInfoBox({
+  data_ranking <- reactive({
     features <- c(03030, 03999, 05005, 14999, 18999, 12998)
-    gr_ramo <- input$grupo_ramos
-    meses_rank <- input$periodo
-    
     # Selección de información a usar
     if(input$horizonte=="mensual"){
       serie <- readRDS("./results/m_serie.290(features).rds")
-      } else{
-            serie <- readRDS("./results/serie.290(features).rds")
-            }
-    print(names(serie))
+    } else{
+      serie <- readRDS("./results/serie.290(features).rds")
+    }
     
+    ranking.290(serie = serie, gr_ramo = input$grupo_ramos, features = features, periods = input$periodo)
+    #ranking <- ranking.290(serie = serie, gr_ramo=gr_ramo, features=features, periods)
+  })
+  
+  #**************************************
+  # Render box - Primas emitidas ####
+  #**************************************
+  output$PrEmitida_Box <- renderInfoBox({
     # Genera información
-    ranking <- ranking.290(serie = serie, gr_ramo = gr_ramo, features = features, periods = meses_rank)
-    s <- sum(ranking[[1]][[7]])
+    s <- sum(data_ranking()[[1]][[7]])
     
     # Genera infobox
     infoBox(
@@ -36,21 +39,8 @@ shinyServer ( function ( input , output ) {
   # Render box - Primas devengadas ####
   #**************************************
   output$PrDevengada_Box <- renderInfoBox({
-    features <- c(03030, 03999, 05005, 14999, 18999, 12998)
-    gr_ramo <- input$grupo_ramos
-    meses_rank <- input$periodo
-    
-    # Selección de información a usar
-    if(input$horizonte=="mensual"){
-      serie <- readRDS("./results/m_serie.290(features).rds")
-    } else{
-      serie <- readRDS("./results/serie.290(features).rds")
-    }
-    print(names(serie))
-    
     # Genera información
-    ranking <- ranking.290(serie = serie, gr_ramo = gr_ramo, features = features, periods = meses_rank)
-    s <- sum(ranking[[1]][[3]])
+    s <- sum(data_ranking()[[1]][[3]])
     
     # Genera infobox
     infoBox(
@@ -63,21 +53,8 @@ shinyServer ( function ( input , output ) {
   # Render box - resultado Técnico ####
   #**************************************
   output$ResTecnicio_Box <- renderInfoBox({
-    features <- c(03030, 03999, 05005, 14999, 18999, 12998)
-    gr_ramo <- input$grupo_ramos
-    meses_rank <- input$periodo
-    
-    # Selección de información a usar
-    if(input$horizonte=="mensual"){
-      serie <- readRDS("./results/m_serie.290(features).rds")
-    } else{
-      serie <- readRDS("./results/serie.290(features).rds")
-    }
-    print(names(serie))
-    
     # Genera información
-    ranking <- ranking.290(serie = serie, gr_ramo = gr_ramo, features = features, periods = meses_rank)
-    s <- sum(ranking[[1]][[4]])
+    s <- sum(data_ranking()[[1]][[4]])
     
     # Genera infobox
     infoBox(
@@ -90,22 +67,8 @@ shinyServer ( function ( input , output ) {
   # Gráfico pastel - Pr Emitidas ####
   #*************************************
   output$pie_Emitidas <- renderPlotly({
-    features <- c(03030, 03999, 05005, 14999, 18999, 12998)
-    gr_ramo <- input$grupo_ramos
-    meses_rank <- input$periodo
-    
-    # Selección de información a usar
-    if(input$horizonte=="mensual"){
-      serie <- readRDS("./results/m_serie.290(features).rds")
-    } else{
-      serie <- readRDS("./results/serie.290(features).rds")
-    }
-    
-    # Genera información
-    ranking <- ranking.290(serie = serie, gr_ramo = gr_ramo, features = features, periods = meses_rank)
-    
     # Genera gráfico
-    p <- ranking[[1]] %>% 
+    p <- data_ranking()[[1]] %>% 
          arrange(desc(`Prima Emitida Directa`)) %>%
          mutate(Primas=round(`Prima Emitida Directa`/1000000,0)) %>%
          plot_ly(labels = ~Compania, values = ~Primas) %>%
@@ -122,22 +85,8 @@ shinyServer ( function ( input , output ) {
   # Gráfico pastel - Pr Devengadas ####
   #*************************************
   output$pie_Devengadas <- renderPlotly({
-    features <- c(03030, 03999, 05005, 14999, 18999, 12998)
-    gr_ramo <- input$grupo_ramos
-    meses_rank <- input$periodo
-    
-    # Selección de información a usar
-    if(input$horizonte=="mensual"){
-      serie <- readRDS("./results/m_serie.290(features).rds")
-    } else{
-      serie <- readRDS("./results/serie.290(features).rds")
-    }
-    
-    # Genera información
-    ranking <- ranking.290(serie = serie, gr_ramo = gr_ramo, features = features, periods = meses_rank)
-    
     # Genera gráfico
-    p <- ranking[[1]] %>% 
+    p <- data_ranking()[[1]] %>% 
       arrange(desc(`PRIMAS DEVENGADAS`)) %>%
       mutate(Primas=round(`PRIMAS DEVENGADAS`/1000000,0)) %>%
       plot_ly(labels = ~Compania, values = ~Primas) %>%
@@ -155,22 +104,8 @@ shinyServer ( function ( input , output ) {
   # Gráfico pastel - Res. Técnico ####
   #*************************************
   output$pie_ResTec <- renderPlotly({
-    features <- c(03030, 03999, 05005, 14999, 18999, 12998)
-    gr_ramo <- input$grupo_ramos
-    meses_rank <- input$periodo
-    
-    # Selección de información a usar
-    if(input$horizonte=="mensual"){
-      serie <- readRDS("./results/m_serie.290(features).rds")
-    } else{
-      serie <- readRDS("./results/serie.290(features).rds")
-    }
-    
-    # Genera información
-    ranking <- ranking.290(serie = serie, gr_ramo = gr_ramo, features = features, periods = meses_rank)
-    
     # Genera gráfico
-    p <- ranking[[1]] %>% 
+    p <- data_ranking()[[1]] %>% 
       arrange(desc(`RESULTADO TECNICO`)) %>%
       mutate(ResTec=round(`RESULTADO TECNICO`/1000000,0)) %>%
       plot_ly(labels = ~Compania, values = ~ResTec) %>%
@@ -181,7 +116,26 @@ shinyServer ( function ( input , output ) {
     #chart_link = api_create(p, filename="pie-donut")
     #chart_link    
     p
+  })
+  
+  #*************************************
+  # Ranking - Home ####
+  #*************************************
+  output$tbl_rank = DT::renderDataTable({
+    message("PEstana: ", input$part_mercado)
+    #mm<-"Primas Emitidas"
+    #p <- ranking[[1]] %>% #data_ranking()[[1]] %>%
+    #  select(Compania, `Primas Emitidas`=`Prima Emitida Directa`, `Primas Devengadas`=`PRIMAS DEVENGADAS`,
+    #         `Resultado Técnico`=`RESULTADO TECNICO`, Siniestralidad=`Indice de Siniestralidad`) %>%
+    #  select(Compania, one_of(mm), Siniestralidad) %>%
+    #  arrange(Siniestralidad)
     
+    p <- data_ranking()[[1]] %>% #data_ranking()[[1]] %>%
+         select(Compania, `Primas Emitidas`=`Prima Emitida Directa`, `Primas Devengadas`=`PRIMAS DEVENGADAS`,
+                `Resultado Técnico`=`RESULTADO TECNICO`, Siniestralidad=`Indice de Siniestralidad`) %>%
+         select(Compania, one_of(input$part_mercado), Siniestralidad) %>%
+         arrange(Siniestralidad)
+    p
   })
   
   
@@ -253,7 +207,8 @@ shinyServer ( function ( input , output ) {
                ),
                menuSubItem("subItem2", tabName = "subItem2"),
                menuSubItem("subItem3", tabName = "subItem3"),
-               menuSubItem("subItem4", tabName = "subItem4"))
+               menuSubItem("subItem4", tabName = "subItem4")
+               )
     )
   })
 })
