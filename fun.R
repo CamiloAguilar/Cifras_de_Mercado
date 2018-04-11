@@ -169,13 +169,13 @@ read.290 <- function(years){
 ## Define nuevas Características definidas a partir de la combinación de cuentas contables disponibles
 ## en el formato 290
 new_feature.290 <- function(serie.290, counts = Ctas_Asociadas, nameFeature = NombreIndicador, keep=FALSE,
-                            percentage = FALSE){
+                            percentage = FALSE, abs.value=TRUE){
   for(m in 1:length(serie.290)){
     p <- serie.290[[m]]
     message(" Calculando ", nameFeature, " para el Grupo ", names(serie.290)[m])
     
     CtasIndicador <- p %>%
-                     mutate(CuentaCorta = as.numeric(str_sub(Cuenta, 7, 12))) %>%
+                     mutate(CuentaCorta = str_sub(Cuenta, 7, 12)) %>%
                      filter(CuentaCorta %in% counts) %>%
                      select(-(CuentaCorta))
     CtasIndicador$Ramo <- as.character(CtasIndicador$Ramo)   
@@ -190,21 +190,34 @@ new_feature.290 <- function(serie.290, counts = Ctas_Asociadas, nameFeature = No
       # Agrupamos cuentas
       IndXramo <- CtasIndicador %>%
                   filter(Ramo==Ramos[i]) %>%
-                  mutate(CuentaCorta = as.numeric(str_sub(Cuenta, 7, 12)))
+                  mutate(CuentaCorta = str_sub(Cuenta, 7, 12))
       # Calcula y Guarda resultados
-      NuevosInd[1] <- as.numeric(paste0("290999", str_pad(sum(counts), 5, pad="0")))
+      NuevosInd[1] <- paste0("290999", str_pad(sum(as.numeric(counts)), 5, pad="0"))
       NuevosInd[2] <- nameFeature
       NuevosInd[3] <- as.character(Ramos[i])
       
-      if(percentage == FALSE){
-        NuevosInd[4:length(names(CtasIndicador))] <- colSums(IndXramo[,4:length(names(CtasIndicador))])
-      } else{
-        n <- which(counts[1]==IndXramo$CuentaCorta) # determina numerador
-        d <- which(counts[2]==IndXramo$CuentaCorta) # determina denominador
-        NuevosInd[4:length(names(CtasIndicador))] <- apply(IndXramo[,4:length(names(CtasIndicador))], 
-                                                           MARGIN = 2, 
-                                                           FUN = indice.290, numerador=n, denominador=d)
+      if(length(4:length(names(CtasIndicador)))>1){
+        if(percentage == FALSE){
+          NuevosInd[4:length(names(CtasIndicador))] <- colSums(IndXramo[,4:length(names(CtasIndicador))])
+          } else{
+                n <- which(counts[1]==IndXramo$CuentaCorta) # determina numerador
+                d <- which(counts[2]==IndXramo$CuentaCorta) # determina denominador
+                NuevosInd[4:length(names(CtasIndicador))] <- apply(IndXramo[,4:length(names(CtasIndicador))],
+                                                                   MARGIN = 2, FUN = indice.290, numerador=n, 
+                                                                   denominador=d, abs.value = abs.value)
+                }
+        } else{
+              if(percentage == FALSE){
+                NuevosInd[4:length(names(CtasIndicador))] <- sum(IndXramo[,4:length(names(CtasIndicador))])
+              } else{
+                     n <- which(counts[1]==IndXramo$CuentaCorta) # determina numerador
+                     d <- which(counts[2]==IndXramo$CuentaCorta) # determina denominador
+                     NuevosInd[4:length(names(CtasIndicador))] <- indice.290(IndXramo[,4:length(names(CtasIndicador))],
+                                                                             numerador = n, denominador = n,
+                                                                             abs.value = abs.value)
+              }
       }
+      
       Indicador[i,] <- NuevosInd
       NuevosInd<-NULL
     }
@@ -225,8 +238,13 @@ new_feature.290 <- function(serie.290, counts = Ctas_Asociadas, nameFeature = No
   return(serie.290)
 }
 
-indice.290 <- function(r, numerador, denominador){
-  res <- round(abs(r[2]/r[1])*100,2)
+indice.290 <- function(r, numerador, denominador, abs.value){
+  if(abs.value==TRUE){
+    res <- round(abs(r[numerador]/r[denominador])*100,2)
+    } else{
+          res <- round(-(r[numerador]/r[denominador])*100,2)
+          }
+  
   res <- ifelse(is.nan(res) | is.infinite(res), 0, res)
   return(res)
 }

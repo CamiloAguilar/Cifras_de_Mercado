@@ -10,8 +10,8 @@ load.lib("readxl", "lubridate", "dplyr", "reshape2", "stringr")
 #*********************************************************************************************************************
 source("Super_Scraping.R")
 
-years <- 2016:2017; save(years, file="./results/years.RData")
-#formatos.290 <- read.290(years=years)
+years <- 2016:2018; save(years, file="./results/years.RData")
+formatos.290 <- read.290(years=years)
 summary(formatos.290)
 
 
@@ -60,7 +60,7 @@ for(k in 1:length(gr)){
          filter(!is.na(`CUENTA FORMATO`)) %>%
          select(agrupa)
     
-    p$Total<- rowSums(p[, (length(names(p))-length(coinciden)+1):length(names(p))])
+    p$Total<- rowSums(p[, ( length(names(p))-valida+1 ):length(names(p))])
     grupo.290[[k]][[pos]] <-  p
     cuenta<-c(cuenta, i)
     pos<-pos+1
@@ -70,6 +70,7 @@ for(k in 1:length(gr)){
 }
 names(grupo.290)<-gr
 summary(grupo.290)
+p<-grupo.290$CHUBB$Mes_22
 
 #*********************************************************************************************************************
 # 3. Serie de datos x Aseguradora ####
@@ -82,11 +83,13 @@ for(i in 1:length(grupo.290)){
   p<-grupo.290[[i]][[1]]
   p[is.na(p)]<-0
   p <- p %>% select(FCorte, `CUENTA FORMATO`, Total)
-  for(j in 2:length(grupo.290[[i]])){
-    pegar<-grupo.290[[i]][[j]]
-    pegar <- pegar %>% select(FCorte, `CUENTA FORMATO`, Total)
-    p<-rbind(p, pegar)
+  if(length(grupo.290[[i]])>1){
+    for(j in 2:length(grupo.290[[i]])){
+      pegar<-grupo.290[[i]][[j]]
+      pegar <- pegar %>% select(FCorte, `CUENTA FORMATO`, Total)
+      p<-rbind(p, pegar)
     }
+  }
   p <- merge(cuentas.290, p, by.x="Cuenta", by.y = "CUENTA FORMATO", all.x=F, all.y=T) %>%
        mutate(Total=Total*signo)
   p <- p %>%
@@ -99,8 +102,8 @@ for(i in 1:length(grupo.290)){
 class(serie.290)<-"ts.290"
 names(serie.290)<-names(grupo.290)
 summary(serie.290)
-p<-serie.290$BBVA
-write.table(p, "./pruebas/290bbva.normal.csv", sep=";", row.names = F)
+p<-serie.290$CHUBB
+write.table(p, "./validations/290_CHUB.normal.csv", sep=";", row.names = F)
 
 #*********************************************************************************************************************
 # 3. Genera subtotales de interés ####
@@ -113,6 +116,16 @@ Ramos <- as.character(unique(serie.290$BBVA$Ramo))
 #*************************************
 ## Parametrización de los grupos
 #*************************************
+Ramos_Total <- c("AGROPECUARIO","AUTOMOVILES","AVIACIÓN","CORRIENTE DÉBIL","CRÉDITO A LA EXPORTACIÓN",
+                 "CRÉDITO COMERCIAL","CUMPLIMIENTO","EDUCATIVO","HOGAR","INCENDIO","LUCRO CESANTE",
+                 "MANEJO","MINAS Y PETRÓLEOS","MONTAJE Y ROTURA DE MAQUINARIA","NAVEGACIÓN Y CASCO",
+                 "RESPONSABILIDAD CIVIL","SOAT","SUSTRACCION","TERREMOTO","TODO RIESGO CONTRATISTA",
+                 "TRANSPORTE","VIDRIOS", "ACCIDENTES PERSONALES","BEPS","COLECTIVO VIDA",
+                 "ENFERMEDADES DE ALTO COSTO","EXEQUIAS", "PATRIM. AUTÓNOMO - FDO. PENS. VOLUNTARIAS",
+                 "PENSIONES CON CONMUTACIÓN PENSIONAL", "PENSIONES LEY 100","PENSIONES VOLUNTARIAS",
+                 "PREVISIONAL","RENTAS VOLUNTARIAS", "RIESGOS LABORALES","SALUD","VIDA GRUPO",
+                 "VIDA INDIVIDUAL","DESEMPLEO")
+
 Ramos_Generales <- c("AGROPECUARIO","AUTOMOVILES","AVIACIÓN","CORRIENTE DÉBIL","CRÉDITO A LA EXPORTACIÓN",
                      "CRÉDITO COMERCIAL","CUMPLIMIENTO","EDUCATIVO","HOGAR","INCENDIO","LUCRO CESANTE",
                      "MANEJO","MINAS Y PETRÓLEOS","MONTAJE Y ROTURA DE MAQUINARIA","NAVEGACIÓN Y CASCO",
@@ -133,6 +146,9 @@ Ramos_Objetivo_Grales <- c("TRANSPORTE", "CORRIENTE DÉBIL", "HOGAR", "MANEJO", 
                            "MONTAJE Y ROTURA DE MAQUINARIA", "RESPONSABILIDAD CIVIL", "INCENDIO", 
                            "TERREMOTO", "SUSTRACCION")
 
+Ramos_Objetivo_Vida <- c("ACCIDENTES PERSONALES","EXEQUIAS","VIDA GRUPO","VIDA INDIVIDUAL","DESEMPLEO")
+
+
 Ramos_SS <- c("PATRIM. AUTÓNOMO - FDO. PENS. VOLUNTARIAS","PENSIONES CON CONMUTACIÓN PENSIONAL",
               "PENSIONES LEY 100","PENSIONES VOLUNTARIAS","PREVISIONAL","RENTAS VOLUNTARIAS",
               "RIESGOS LABORALES")
@@ -140,11 +156,15 @@ Ramos_SS <- c("PATRIM. AUTÓNOMO - FDO. PENS. VOLUNTARIAS","PENSIONES CON CONMUT
 Ramos_Vida_sinSS <- c("ACCIDENTES PERSONALES","BEPS","COLECTIVO VIDA","ENFERMEDADES DE ALTO COSTO","EXEQUIAS",
                       "SALUD","VIDA GRUPO","VIDA INDIVIDUAL", "DESEMPLEO")
 
-Ramos_grupos <- list(Ramos_Vida, Ramos_Generales, Ramos_Objetivo, Ramos_Objetivo_Grales, Ramos_SS, Ramos_Vida_sinSS)
-names(Ramos_grupos) <- c("Ramos_Vida", "Ramos_Generales", "Ramos_Objetivo", "Ramos_Objetivo_Grales", 
-                         "Ramos_SS", "Ramos_Vida_sinSS")
+
+Ramos_grupos <- list(Ramos_Total, Ramos_Vida, Ramos_Generales, Ramos_Objetivo, Ramos_Objetivo_Grales, Ramos_Objetivo_Vida,
+                     Ramos_SS, Ramos_Vida_sinSS)
+names(Ramos_grupos) <- c("Ramos_Total", "Ramos_Vida", "Ramos_Generales", "Ramos_Objetivo", "Ramos_Objetivo_Grales", 
+                         "Ramos_Objetivo_Vida", "Ramos_SS", "Ramos_Vida_sinSS")
 saveRDS(Ramos_grupos, "./results/Ramos_grupos.rds")
 
+## El 191 en adelante es el número de Ramo que se definimos para no traslapar con el 290, el cual
+## tiene a la fecha 043 ramos
 numRamos <- 191:(191+length(Ramos_grupos))
 
 #*************************************
@@ -183,7 +203,7 @@ for(k in 1: length(serie.290)){
 
 summary(serie.290)
 p<-serie.290$BBVA
-write.table(p, "./pruebas/290bbva.normal.csv", sep=";", row.names = F)
+#write.table(p, "./pruebas/290bbva.normal.csv", sep=";", row.names = F)
 
 
 
@@ -223,7 +243,7 @@ class(m_serie.290)<-"ts.290"
 names(m_serie.290)<-names(serie.290)
 summary(m_serie.290)
 p2 <- m_serie.290$BBVA
-write.table(p2, "./pruebas/290bbva.mensual.csv", sep=";", row.names = F)
+#write.table(p2, "./pruebas/290bbva.mensual.csv", sep=";", row.names = F)
 
 
 
@@ -231,6 +251,13 @@ write.table(p2, "./pruebas/290bbva.mensual.csv", sep=";", row.names = F)
 # 5. Guarda Resultados ####
 #*********************************************************************************************************************
 save(formatos.290, file = "./results/formatos.290.RData")
+saveRDS(formatos.290, file = "./results/formatos.290.rds")
+
 save(serie.290, file = "./results/serie.290.RData")
+saveRDS(serie.290, file = "./results/serie.290.rds")
+
 save(m_serie.290, file = "./results/m_serie.290.RData")
+saveRDS(m_serie.290, file = "./results/m_serie.290.rds")
+
 save(Ramos_grupos, file = "./results/Ramos_grupos.RData")
+saveRDS(Ramos_grupos, file = "./results/Ramos_grupos.rds")

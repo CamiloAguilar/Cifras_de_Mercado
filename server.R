@@ -73,7 +73,7 @@ shinyServer ( function ( input , output ) {
          mutate(Primas=round(`Prima Emitida Directa`/1000000,0)) %>%
          plot_ly(labels = ~Compania, values = ~Primas) %>%
          add_pie(hole = 0.6) %>%
-         layout(title = "Primas Emitidas \n Participación por compañías",  showlegend = F,
+         layout(title = "Participación por compañías",  showlegend = F,
                 xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
                 yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
     #chart_link = api_create(p, filename="pie-donut")
@@ -91,7 +91,7 @@ shinyServer ( function ( input , output ) {
       mutate(Primas=round(`PRIMAS DEVENGADAS`/1000000,0)) %>%
       plot_ly(labels = ~Compania, values = ~Primas) %>%
       add_pie(hole = 0.6) %>%
-      layout(title = "Primas Devengadas \n Participación por compañías",  showlegend = F,
+      layout(title = "Participación por compañías",  showlegend = F,
              xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
              yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
     #chart_link = api_create(p, filename="pie-donut")
@@ -110,7 +110,7 @@ shinyServer ( function ( input , output ) {
       mutate(ResTec=round(`RESULTADO TECNICO`/1000000,0)) %>%
       plot_ly(labels = ~Compania, values = ~ResTec) %>%
       add_pie(hole = 0.6) %>%
-      layout(title = "Resultado Técnico \n Participación por compañías",  showlegend = F,
+      layout(title = "Participación por compañías",  showlegend = F,
              xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
              yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
     #chart_link = api_create(p, filename="pie-donut")
@@ -129,12 +129,17 @@ shinyServer ( function ( input , output ) {
     #         `Resultado Técnico`=`RESULTADO TECNICO`, Siniestralidad=`Indice de Siniestralidad`) %>%
     #  select(Compania, one_of(mm), Siniestralidad) %>%
     #  arrange(Siniestralidad)
+    descendente <- paste0("desc(`", input$part_mercado,"`)")
+    message("Odenado: ", descendente)
     
     p <- data_ranking()[[1]] %>% #data_ranking()[[1]] %>%
          select(Compania, `Primas Emitidas`=`Prima Emitida Directa`, `Primas Devengadas`=`PRIMAS DEVENGADAS`,
                 `Resultado Técnico`=`RESULTADO TECNICO`, Siniestralidad=`Indice de Siniestralidad`) %>%
+         filter(Siniestralidad>0) %>%
+         mutate(`Primas Emitidas`= round(`Primas Emitidas`), `Primas Devengadas`=round(`Primas Devengadas`),
+                `Resultado Técnico`=round(`Resultado Técnico`)) %>%
          select(Compania, one_of(input$part_mercado), Siniestralidad) %>%
-         arrange(Siniestralidad)
+         arrange_(.dots=descendente)
     p
   })
   
